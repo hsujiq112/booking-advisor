@@ -5,9 +5,9 @@ import java.util.UUID;
 
 public interface ServiceI<T> {
 
-    public void insert(T param);
-    public T findById(UUID id);
-    public ArrayList<T> dbSet();
-    public void update(T model);
-    public void delete(UUID id);
+    public void insert(T param) throws Exception;
+    public T findById(UUID id) throws Exception;
+    public ArrayList<T> dbSet() throws Exception;
+    public void update(T model) throws Exception;
+    public void delete(UUID id) throws Exception;
 }

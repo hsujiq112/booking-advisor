@@ -2,7 +2,7 @@ package presentation;
 
 import javax.swing.*;
 
-public class DestinationEditPopup {
+public class DestinationPopup {
     private JTextField destinationNameTextField;
     private JPanel destinationPopupPanel;
     private JButton destinationButton;

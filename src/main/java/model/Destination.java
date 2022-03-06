@@ -14,7 +14,7 @@ public class Destination {
     @Type(type = "uuid-char")
     private UUID destinationId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String destinationName;
 
     @OneToMany(mappedBy = "destination", cascade = CascadeType.ALL)

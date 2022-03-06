@@ -14,6 +14,14 @@ public abstract class RepositoryBase<T> {
     private final Class<T> model = (Class<T>) ((ParameterizedType) getClass()
             .getGenericSuperclass()).getActualTypeArguments()[0];
 
+    public EntityManagerFactory getEntityManagerFactory() {
+        return entityManagerFactory;
+    }
+
+    public Class<T> getModel() {
+        return model;
+    }
+
     public void insert(T param) {
         var em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();

@@ -42,6 +42,8 @@ public class User {
         this.emailAddress = emailAddress;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.username = username;
+        this.password = password;
         this.isAdmin = false;
     }
 
@@ -81,6 +83,14 @@ public class User {
 
     public List<VacationPackage> getVacationPackageUsers() {
         return vacationPackageUsers;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     @Override

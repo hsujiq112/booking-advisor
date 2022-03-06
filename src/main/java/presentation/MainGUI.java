@@ -1,13 +1,11 @@
 package presentation;
 
-import service.UserService;
-
 import javax.swing.*;
 
 public class MainGUI {
 
 
-    private JTabbedPane tabbedPane1;
+    private JTabbedPane mainTabbedPane;
     private JPanel panel1;
     private JTextField loginUsernameText;
     private JPasswordField loginPassword;
@@ -23,7 +21,6 @@ public class MainGUI {
     private JButton vacayRefresh;
     private JTabbedPane tabbedPane3;
     private JComboBox destinationComboBox;
-    private JButton adminRefresh;
     private JTable destinationsTable;
     private JTable allVacayTable;
     private JTable userVacayTable;
@@ -31,9 +28,10 @@ public class MainGUI {
     private JButton addDestinationButton;
     private JButton addVacationPackageButton;
     private JScrollPane destinationScrollFrame;
+    private JButton logOutButton;
 
-    public JScrollPane getDestinationScrollFrame() {
-        return destinationScrollFrame;
+    public JTabbedPane getMainTabbedPane() {
+        return mainTabbedPane;
     }
 
     public JPanel getPanel1() {
@@ -42,10 +40,6 @@ public class MainGUI {
 
     public JTextField getLoginUsernameText() {
         return loginUsernameText;
-    }
-
-    public JPasswordField getLoginPassword() {
-        return loginPassword;
     }
 
     public JTextField getRegisterEmailText() {
@@ -88,10 +82,6 @@ public class MainGUI {
         return destinationComboBox;
     }
 
-    public JButton getAdminRefresh() {
-        return adminRefresh;
-    }
-
     public JTable getDestinationsTable() {
         return destinationsTable;
     }
@@ -114,5 +104,13 @@ public class MainGUI {
 
     public JButton getAddVacationPackageButton() {
         return addVacationPackageButton;
+    }
+
+    public JPasswordField getLoginPassword() {
+        return loginPassword;
+    }
+
+    public JButton getLogOutButton() {
+        return logOutButton;
     }
 }

@@ -186,6 +186,7 @@ public class ButtonColumn extends AbstractCellEditor
                 ActionEvent.ACTION_PERFORMED,
                 "" + row);
         action.actionPerformed(event);
+
     }
 
     //

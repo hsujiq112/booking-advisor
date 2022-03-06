@@ -3,8 +3,7 @@ package model;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,13 +22,13 @@ public class VacationPackage {
     private String extraDetails;
 
     @Column
-    private String vacationPrice;
+    private Float vacationPrice;
 
     @Column
-    private Date startPeriod;
+    private LocalDate startPeriod;
 
     @Column
-    private Date endPeriod;
+    private LocalDate endPeriod;
 
     @Column
     private Integer vacationCapacity;
@@ -50,7 +49,7 @@ public class VacationPackage {
         return userCount < vacationCapacity ? VacationPackageStatusEnum.IN_PROGRESS : VacationPackageStatusEnum.BOOKED;
     }
 
-    public VacationPackage(UUID vacationPackageId, String vacationName, String extraDetails, String vacationPrice, Date startPeriod, Date endPeriod, Integer vacationCapacity) {
+    public VacationPackage(UUID vacationPackageId, String vacationName, String extraDetails, Float vacationPrice, LocalDate startPeriod, LocalDate endPeriod, Integer vacationCapacity, Destination destination) {
         this.vacationPackageId = vacationPackageId;
         this.vacationName = vacationName;
         this.extraDetails = extraDetails;
@@ -58,9 +57,57 @@ public class VacationPackage {
         this.startPeriod = startPeriod;
         this.endPeriod = endPeriod;
         this.vacationCapacity = vacationCapacity;
+        this.destination = destination;
+    }
+
+    public VacationPackage(String vacationName, String extraDetails, Float vacationPrice, LocalDate startPeriod, LocalDate endPeriod, Integer vacationCapacity, Destination destination) {
+        this.vacationPackageId = UUID.randomUUID();
+        this.vacationName = vacationName;
+        this.extraDetails = extraDetails;
+        this.vacationPrice = vacationPrice;
+        this.startPeriod = startPeriod;
+        this.endPeriod = endPeriod;
+        this.vacationCapacity = vacationCapacity;
+        this.destination = destination;
     }
 
     public VacationPackage() {
 
+    }
+
+    public UUID getVacationPackageId() {
+        return vacationPackageId;
+    }
+
+    public String getVacationName() {
+        return vacationName;
+    }
+
+    public String getExtraDetails() {
+        return extraDetails;
+    }
+
+    public Float getVacationPrice() {
+        return vacationPrice;
+    }
+
+    public LocalDate getStartPeriod() {
+        return startPeriod;
+    }
+
+    public LocalDate getEndPeriod() {
+        return endPeriod;
+    }
+
+    public Integer getVacationCapacity() {
+        return vacationCapacity;
+    }
+
+    public List<User> getVacationPackageUsers() {
+        return vacationPackageUsers;
+    }
+
+    public Destination getDestination() {
+        return destination;
     }
 }
