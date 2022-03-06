@@ -1,6 +1,5 @@
 package presentation;
 
-import controller.UserController;
 import service.UserService;
 
 import javax.swing.*;
@@ -10,28 +9,110 @@ public class MainGUI {
 
     private JTabbedPane tabbedPane1;
     private JPanel panel1;
-    private JTextField textField1;
-    private JPasswordField passwordField1;
-    private JTextField textField2;
-    private JTextField textField3;
-    private JTextField textField4;
-    private JTextField textField5;
-    private JPasswordField passwordField2;
+    private JTextField loginUsernameText;
+    private JPasswordField loginPassword;
+    private JTextField registerEmailText;
+    private JTextField registerFirstNameText;
+    private JTextField resiterLastNameText;
+    private JTextField registerUsernameText;
+    private JPasswordField registerPassword;
     private JButton registerButton;
     private JButton loginButton;
+    private JTabbedPane tabbedPane4;
+    private JComboBox vacayComboBox;
+    private JButton vacayRefresh;
+    private JTabbedPane tabbedPane3;
+    private JComboBox destinationComboBox;
+    private JButton adminRefresh;
+    private JTable destinationsTable;
+    private JTable allVacayTable;
+    private JTable userVacayTable;
+    private JTable vacationsByDestinationTable;
+    private JButton addDestinationButton;
+    private JButton addVacationPackageButton;
+    private JScrollPane destinationScrollFrame;
 
-    private static final UserService userService = new UserService();
+    public JScrollPane getDestinationScrollFrame() {
+        return destinationScrollFrame;
+    }
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("MainGUI");
-        frame.setContentPane(new MainGUI().panel1);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-        //userController.createUser("munti@yahoo.com", "Tudi", "TheMunti");
-        //userController.createUser("rares@yahoo.com", "Rares", "Man");
-        //userController.createUser("mirkyu@yahoo.com", "Mirky", "Salady");
+    public JPanel getPanel1() {
+        return panel1;
+    }
 
+    public JTextField getLoginUsernameText() {
+        return loginUsernameText;
+    }
 
+    public JPasswordField getLoginPassword() {
+        return loginPassword;
+    }
+
+    public JTextField getRegisterEmailText() {
+        return registerEmailText;
+    }
+
+    public JTextField getRegisterFirstNameText() {
+        return registerFirstNameText;
+    }
+
+    public JTextField getResiterLastNameText() {
+        return resiterLastNameText;
+    }
+
+    public JTextField getRegisterUsernameText() {
+        return registerUsernameText;
+    }
+
+    public JPasswordField getRegisterPassword() {
+        return registerPassword;
+    }
+
+    public JButton getRegisterButton() {
+        return registerButton;
+    }
+
+    public JButton getLoginButton() {
+        return loginButton;
+    }
+
+    public JComboBox getVacayComboBox() {
+        return vacayComboBox;
+    }
+
+    public JButton getVacayRefresh() {
+        return vacayRefresh;
+    }
+
+    public JComboBox getDestinationComboBox() {
+        return destinationComboBox;
+    }
+
+    public JButton getAdminRefresh() {
+        return adminRefresh;
+    }
+
+    public JTable getDestinationsTable() {
+        return destinationsTable;
+    }
+
+    public JTable getAllVacayTable() {
+        return allVacayTable;
+    }
+
+    public JTable getUserVacayTable() {
+        return userVacayTable;
+    }
+
+    public JTable getVacationsByDestinationTable() {
+        return vacationsByDestinationTable;
+    }
+
+    public JButton getAddDestinationButton() {
+        return addDestinationButton;
+    }
+
+    public JButton getAddVacationPackageButton() {
+        return addVacationPackageButton;
     }
 }

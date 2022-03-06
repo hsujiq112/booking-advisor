@@ -3,7 +3,6 @@ package model;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,7 +17,7 @@ public class Destination {
     @Column(nullable = false)
     private String destinationName;
 
-    @OneToMany(mappedBy = "destination")
+    @OneToMany(mappedBy = "destination", cascade = CascadeType.ALL)
     private List<VacationPackage> vacationPackages;
 
     public Destination(UUID destinationId, String destinationName) {
@@ -26,7 +25,24 @@ public class Destination {
         this.destinationName = destinationName;
     }
 
+    public Destination(String destinationName) {
+        this.destinationId = UUID.randomUUID();
+        this.destinationName = destinationName;
+    }
+
     public Destination() {
 
+    }
+
+    public UUID getDestinationId() {
+        return destinationId;
+    }
+
+    public String getDestinationName() {
+        return destinationName;
+    }
+
+    public List<VacationPackage> getVacationPackages() {
+        return vacationPackages;
     }
 }
