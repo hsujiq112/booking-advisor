@@ -1,19 +1,19 @@
 package model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.util.Optional;
-import java.util.UUID;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "user")
 public class User {
 
     @Id
-    private UUID id;
+    @Type(type = "org.hibernate.type.UUIDCharType")
+    private UUID userId;
 
     @Column(unique = true, nullable = false)
     private String emailAddress;
@@ -24,11 +24,15 @@ public class User {
     @Column(nullable = false)
     private String lastName;
 
-    @Column()
+    @Column(nullable = false)
     private Boolean isAdmin;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "vacation_package_user_join", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "vacationPackageId"))
+    private List<VacationPackage> vacationPackageUsers;
+
     public User(String emailAddress, String firstName, String lastName) {
-        this.id = UUID.randomUUID();
+        this.userId = UUID.randomUUID();
         this.emailAddress = emailAddress;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -36,7 +40,7 @@ public class User {
     }
 
     public User(UUID id, String emailAddress, String firstName, String lastName, Boolean isAdmin) {
-        this.id = id;
+        this.userId = id;
         this.emailAddress = emailAddress;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -45,5 +49,17 @@ public class User {
 
     public User() {
 
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", emailAddress='" + emailAddress + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", isAdmin=" + isAdmin +
+                ", vacationPackageUsers=" + vacationPackageUsers +
+                '}';
     }
 }
