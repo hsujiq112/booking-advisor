@@ -37,7 +37,7 @@ public abstract class RepositoryBase<T> {
         return getAllQuery.getResultList();
     }
 
-    private void update(T model) {
+    public void update(T model) {
         var em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
         em.merge(model);

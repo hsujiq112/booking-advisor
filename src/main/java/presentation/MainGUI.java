@@ -1,6 +1,7 @@
 package presentation;
 
 import controller.UserController;
+import model.User;
 
 import javax.swing.*;
 import java.util.UUID;
@@ -24,8 +25,8 @@ public class MainGUI {
         //userController.createUser("mirkyu@yahoo.com", "Mirky", "Salady");
         var users = userController.dbSet();
         users.forEach(System.out::println);
-        var myFoundUser = userController.getUserByID(UUID.fromString("a63799f4-c752-40f3-9d7a-26fece92379c"));
-        System.out.println("UITE AM GASIT USERU");
-        System.out.println(myFoundUser);
+        userController.delteUser(users.get(0).getUserId());
+        users = userController.dbSet();
+        users.forEach(System.out::println);
     }
 }

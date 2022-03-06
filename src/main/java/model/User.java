@@ -51,6 +51,30 @@ public class User {
 
     }
 
+    public UUID getUserId() {
+        return userId;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public Boolean getAdmin() {
+        return isAdmin;
+    }
+
+    public List<VacationPackage> getVacationPackageUsers() {
+        return vacationPackageUsers;
+    }
+
     @Override
     public String toString() {
         return "User{" +

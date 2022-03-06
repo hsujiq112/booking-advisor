@@ -16,7 +16,7 @@ public class UserController {
 
     public void createUser(String emailAddress, String firstName, String lastName) {
         var user = new User(emailAddress, firstName, lastName);
-        userService.createUser(user);
+        userService.insert(user);
     }
 
     public ArrayList<User> dbSet() {
@@ -24,6 +24,14 @@ public class UserController {
     }
 
     public User getUserByID(UUID id) {
-        return userService.getUserByID(id);
+        return userService.getByID(id);
+    }
+
+    public void updateUser(User user) {
+        userService.update(user);
+    }
+
+    public void delteUser(UUID id) {
+        userService.delete(id);
     }
 }
