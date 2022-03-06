@@ -25,13 +25,19 @@ public class User {
     private String lastName;
 
     @Column(nullable = false)
+    private String username;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
     private Boolean isAdmin;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "vacation_package_user_join", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "vacationPackageId"))
     private List<VacationPackage> vacationPackageUsers;
 
-    public User(String emailAddress, String firstName, String lastName) {
+    public User(String emailAddress, String firstName, String lastName, String username, String password) {
         this.userId = UUID.randomUUID();
         this.emailAddress = emailAddress;
         this.firstName = firstName;
@@ -39,11 +45,13 @@ public class User {
         this.isAdmin = false;
     }
 
-    public User(UUID id, String emailAddress, String firstName, String lastName, Boolean isAdmin) {
-        this.userId = id;
+    public User(UUID userId, String emailAddress, String firstName, String lastName, String username, String password, Boolean isAdmin) {
+        this.userId = userId;
         this.emailAddress = emailAddress;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.username = username;
+        this.password = password;
         this.isAdmin = isAdmin;
     }
 

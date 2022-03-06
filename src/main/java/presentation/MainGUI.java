@@ -1,18 +1,26 @@
 package presentation;
 
 import controller.UserController;
-import model.User;
+import service.UserService;
 
 import javax.swing.*;
-import java.util.UUID;
 
 public class MainGUI {
 
 
     private JTabbedPane tabbedPane1;
     private JPanel panel1;
+    private JTextField textField1;
+    private JPasswordField passwordField1;
+    private JTextField textField2;
+    private JTextField textField3;
+    private JTextField textField4;
+    private JTextField textField5;
+    private JPasswordField passwordField2;
+    private JButton registerButton;
+    private JButton loginButton;
 
-    private static final UserController userController = new UserController();
+    private static final UserService userService = new UserService();
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("MainGUI");
@@ -23,10 +31,7 @@ public class MainGUI {
         //userController.createUser("munti@yahoo.com", "Tudi", "TheMunti");
         //userController.createUser("rares@yahoo.com", "Rares", "Man");
         //userController.createUser("mirkyu@yahoo.com", "Mirky", "Salady");
-        var users = userController.dbSet();
-        users.forEach(System.out::println);
-        userController.delteUser(users.get(0).getUserId());
-        users = userController.dbSet();
-        users.forEach(System.out::println);
+
+
     }
 }

@@ -43,7 +43,7 @@ public class VacationPackage {
     private Destination destination;
 
     public VacationPackageStatusEnum getStatusEnumForVacation() {
-        var userCount = vacationPackageUsers.stream().count();
+        var userCount = vacationPackageUsers.size();
         if (userCount == 0) {
             return VacationPackageStatusEnum.NOT_BOOKED;
         }
