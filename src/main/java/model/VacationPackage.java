@@ -4,6 +4,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -49,7 +50,7 @@ public class VacationPackage {
         return userCount < vacationCapacity ? VacationPackageStatusEnum.IN_PROGRESS : VacationPackageStatusEnum.BOOKED;
     }
 
-    public VacationPackage(UUID vacationPackageId, String vacationName, String extraDetails, Float vacationPrice, LocalDate startPeriod, LocalDate endPeriod, Integer vacationCapacity, Destination destination) {
+    public VacationPackage(UUID vacationPackageId, String vacationName, String extraDetails, Float vacationPrice, LocalDate startPeriod, LocalDate endPeriod, Integer vacationCapacity, Destination destination, List<User> vacationPackageUsers) {
         this.vacationPackageId = vacationPackageId;
         this.vacationName = vacationName;
         this.extraDetails = extraDetails;
@@ -58,6 +59,7 @@ public class VacationPackage {
         this.endPeriod = endPeriod;
         this.vacationCapacity = vacationCapacity;
         this.destination = destination;
+        this.vacationPackageUsers = vacationPackageUsers == null ? new ArrayList<>() : vacationPackageUsers;
     }
 
     public VacationPackage(String vacationName, String extraDetails, Float vacationPrice, LocalDate startPeriod, LocalDate endPeriod, Integer vacationCapacity, Destination destination) {
@@ -69,6 +71,7 @@ public class VacationPackage {
         this.endPeriod = endPeriod;
         this.vacationCapacity = vacationCapacity;
         this.destination = destination;
+        this.vacationPackageUsers = new ArrayList<>();
     }
 
     public VacationPackage() {

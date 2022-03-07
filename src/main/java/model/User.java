@@ -3,7 +3,6 @@ package model;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,7 +14,7 @@ public class User {
     @Type(type = "org.hibernate.type.UUIDCharType")
     private UUID userId;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String emailAddress;
 
     @Column(nullable = false)
@@ -24,7 +23,7 @@ public class User {
     @Column(nullable = false)
     private String lastName;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
 
     @Column(nullable = false)

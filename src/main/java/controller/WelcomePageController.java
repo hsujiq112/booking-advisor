@@ -1,23 +1,35 @@
 package controller;
 
 import exceptions.InvalidUserException;
+import listeners.UserConnectedListener;
+import listeners.UserPackageUpdateListener;
 import model.User;
 import presentation.MainGUI;
 import service.UserService;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 
-public class WelcomePageController {
+public class WelcomePageController implements UserPackageUpdateListener {
 
-    public WelcomePageController(MainGUI mainGUI) {
+    private VacaySeekerAllVacationsController vacaySeekerAllVacationsController;
+    private VacaySeekerUserVacationsController vacaySeekerUserVacationsController;
+    private final ArrayList<UserConnectedListener> listenerList = new ArrayList<>();
+    private UserService userService;
+    private User loggedInUser;
+
+    public WelcomePageController(MainGUI mainGUI, VacaySeekerAllVacationsController vacaySeekerAllVacationsController,
+                                 VacaySeekerUserVacationsController vacaySeekerUserVacationsController) {
         try {
-            var userService = new UserService();
+            this.vacaySeekerAllVacationsController = vacaySeekerAllVacationsController;
+            this.vacaySeekerUserVacationsController = vacaySeekerUserVacationsController;
+            userService = new UserService();
             mainGUI.getLoginButton().addActionListener(i -> {
                 try {
                     var username = mainGUI.getLoginUsernameText().getText();
                     var password = Arrays.toString(mainGUI.getLoginPassword().getPassword());
-                    User loggedInUser = null;
+                    loggedInUser = null;
                     try {
                         loggedInUser = userService.tryLoginUser(username, password);
                     } catch (InvalidUserException ex) {
@@ -37,6 +49,13 @@ public class WelcomePageController {
                     }
                     mainGUI.getLoginUsernameText().setText("");
                     mainGUI.getLoginPassword().setText("");
+                    mainGUI.getUsernameTextField().setText(loggedInUser.getUsername());
+                    mainGUI.getFirstNameTextField().setText(loggedInUser.getFirstName());
+                    mainGUI.getLastNameTextField().setText(loggedInUser.getLastName());
+                    mainGUI.getEmailTextField().setText(loggedInUser.getEmailAddress());
+                    vacaySeekerAllVacationsController.setCurrentUserLoggedIn(loggedInUser);
+                    vacaySeekerUserVacationsController.setCurrentUserLoggedIn(loggedInUser);
+                    emitUserConnected();
                     JOptionPane.showMessageDialog(null,
                             "Welcome, " + username + "!");
                 } catch (Exception ex) {
@@ -47,7 +66,7 @@ public class WelcomePageController {
                 try {
                     var email = mainGUI.getRegisterEmailText().getText();
                     var firstName = mainGUI.getRegisterFirstNameText().getText();
-                    var lastName = mainGUI.getResiterLastNameText().getText();
+                    var lastName = mainGUI.getRegisterLastNameText().getText();
                     var username = mainGUI.getRegisterUsernameText().getText();
                     var password = Arrays.toString(mainGUI.getRegisterPassword().getPassword());
                     try {
@@ -60,7 +79,7 @@ public class WelcomePageController {
                             username + " registered successfully. You can login now!");
                     mainGUI.getRegisterEmailText().setText("");
                     mainGUI.getRegisterFirstNameText().setText("");
-                    mainGUI.getResiterLastNameText().setText("");
+                    mainGUI.getRegisterLastNameText().setText("");
                     mainGUI.getRegisterUsernameText().setText("");
                     mainGUI.getRegisterPassword().setText("");
                 } catch (Exception ex) {
@@ -75,14 +94,37 @@ public class WelcomePageController {
                 mainGUI.getMainTabbedPane().setSelectedIndex(0);
                 JOptionPane.showMessageDialog(null,
                         "See you!");
+                mainGUI.getUsernameTextField().setText("");
+                mainGUI.getFirstNameTextField().setText("");
+                mainGUI.getLastNameTextField().setText("");
+                mainGUI.getEmailTextField().setText("");
+                vacaySeekerAllVacationsController.setCurrentUserLoggedIn(null);
+                vacaySeekerUserVacationsController.setCurrentUserLoggedIn(null);
             });
         } catch (Exception ex) {
             showErrorMessage(ex.getMessage(), "Fatal Error");
         }
     }
 
+    public void addListener(UserConnectedListener listener) {
+        listenerList.add(listener);
+    }
+
+    private void emitUserConnected() {
+        for (var listener: listenerList) {
+            listener.updateTable();
+        }
+    }
+
     private void showErrorMessage(String message, String title) {
         JOptionPane.showMessageDialog(new JFrame(), message, title,
                 JOptionPane.ERROR_MESSAGE);
+    }
+
+    @Override
+    public void reinitializeUser() {
+        loggedInUser = userService.findById(loggedInUser.getUserId());
+        vacaySeekerAllVacationsController.setCurrentUserLoggedIn(loggedInUser);
+        vacaySeekerUserVacationsController.setCurrentUserLoggedIn(loggedInUser);
     }
 }

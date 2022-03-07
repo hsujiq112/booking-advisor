@@ -1,6 +1,4 @@
-import controller.AdminVacationPackageController;
-import controller.DestinationController;
-import controller.WelcomePageController;
+import controller.*;
 import presentation.MainGUI;
 
 import javax.swing.*;
@@ -20,7 +18,17 @@ public class Main {
         frame.setVisible(true);
         var destController = new DestinationController(gui);
         var adminVacPackController = new AdminVacationPackageController(gui);
+        var vacayController = new VacaySeekerAllVacationsController(gui);
+        var vacayUserController = new VacaySeekerUserVacationsController(gui);
+        var welcomePageController = new WelcomePageController(gui, vacayController, vacayUserController);
         destController.addListener(adminVacPackController);
-        new WelcomePageController(gui);
+        welcomePageController.addListener(destController);
+        welcomePageController.addListener(adminVacPackController);
+        welcomePageController.addListener(vacayController);
+        welcomePageController.addListener(vacayUserController);
+        vacayController.addUserPackageUpdateListener(welcomePageController);
+        vacayController.addVacationAddedToUserListener(vacayUserController);
+        vacayUserController.addUserPackageUpdateListener(welcomePageController);
+        vacayUserController.addVacationRemovedToUserListener(vacayController);
     }
 }

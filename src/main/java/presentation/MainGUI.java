@@ -11,15 +11,13 @@ public class MainGUI {
     private JPasswordField loginPassword;
     private JTextField registerEmailText;
     private JTextField registerFirstNameText;
-    private JTextField resiterLastNameText;
+    private JTextField registerLastNameText;
     private JTextField registerUsernameText;
     private JPasswordField registerPassword;
     private JButton registerButton;
     private JButton loginButton;
-    private JTabbedPane tabbedPane4;
     private JComboBox vacayComboBox;
-    private JButton vacayRefresh;
-    private JTabbedPane tabbedPane3;
+    private JButton vacayRefreshButton;
     private JComboBox destinationComboBox;
     private JTable destinationsTable;
     private JTable allVacayTable;
@@ -27,8 +25,13 @@ public class MainGUI {
     private JTable vacationsByDestinationTable;
     private JButton addDestinationButton;
     private JButton addVacationPackageButton;
-    private JScrollPane destinationScrollFrame;
     private JButton logOutButton;
+    private JTextField usernameTextField;
+    private JTextField firstNameTextField;
+    private JTextField lastNameTextField;
+    private JScrollPane allVacaysTable;
+    private JScrollPane userVacaysTable;
+    private JTextField emailTextField;
 
     public JTabbedPane getMainTabbedPane() {
         return mainTabbedPane;
@@ -50,8 +53,8 @@ public class MainGUI {
         return registerFirstNameText;
     }
 
-    public JTextField getResiterLastNameText() {
-        return resiterLastNameText;
+    public JTextField getRegisterLastNameText() {
+        return registerLastNameText;
     }
 
     public JTextField getRegisterUsernameText() {
@@ -75,7 +78,7 @@ public class MainGUI {
     }
 
     public JButton getVacayRefresh() {
-        return vacayRefresh;
+        return vacayRefreshButton;
     }
 
     public JComboBox getDestinationComboBox() {
@@ -112,5 +115,21 @@ public class MainGUI {
 
     public JButton getLogOutButton() {
         return logOutButton;
+    }
+
+    public JTextField getUsernameTextField() {
+        return usernameTextField;
+    }
+
+    public JTextField getFirstNameTextField() {
+        return firstNameTextField;
+    }
+
+    public JTextField getLastNameTextField() {
+        return lastNameTextField;
+    }
+
+    public JTextField getEmailTextField() {
+        return emailTextField;
     }
 }

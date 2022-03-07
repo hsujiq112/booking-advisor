@@ -1,6 +1,8 @@
 package controller;
 
 import exceptions.InvalidDestinationException;
+import listeners.DestinationAddedListener;
+import listeners.UserConnectedListener;
 import model.Destination;
 import presentation.ButtonColumn;
 import presentation.DestinationPopup;
@@ -13,7 +15,7 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class DestinationController {
+public class DestinationController implements UserConnectedListener {
 
     private final DestinationService destService = new DestinationService();
     private final MainGUI mainGUI;
@@ -22,8 +24,6 @@ public class DestinationController {
     public DestinationController(MainGUI mainGUI) {
         this.mainGUI = mainGUI;
         try {
-            mainGUI.getDestinationsTable().setModel(createTableModel(destService.dbSet()));
-            resetButtonRenderers();
             mainGUI.getAddDestinationButton().addActionListener(add -> {
                 try {
                     var frame = (JFrame)SwingUtilities.getRoot(mainGUI.getPanel1());
@@ -40,8 +40,7 @@ public class DestinationController {
                                 showErrorMessage(exception.getMessage(), "Uh oh!");
                                 return;
                             }
-                            mainGUI.getDestinationsTable().setModel(createTableModel(destService.dbSet()));
-                            resetButtonRenderers();
+                            updateTable();
                             modal.setVisible(false);
                             JOptionPane.showMessageDialog(null,
                                     newDestName + " added successfully");
@@ -79,8 +78,7 @@ public class DestinationController {
                     var destID = (UUID) table.getModel().getValueAt(rowPressed, 0);
                     var destName = (String) table.getModel().getValueAt(rowPressed, 1);
                     destService.delete(destID);
-                    mainGUI.getDestinationsTable().setModel(createTableModel(destService.dbSet()));
-                    resetButtonRenderers();
+                    updateTable();
                     JOptionPane.showMessageDialog(null,
                             destName + " deleted successfully");
                     emitDestinationChange();
@@ -114,8 +112,7 @@ public class DestinationController {
                             showErrorMessage(ex.getMessage(), "Uh oh!");
                             return;
                         }
-                        mainGUI.getDestinationsTable().setModel(createTableModel(destService.dbSet()));
-                        resetButtonRenderers();
+                        updateTable();
                         modal.setVisible(false);
                         JOptionPane.showMessageDialog(null,
                                 newDestName + " updated successfully");
@@ -179,4 +176,13 @@ public class DestinationController {
                 JOptionPane.ERROR_MESSAGE);
     }
 
+    @Override
+    public void updateTable() {
+        try {
+            mainGUI.getDestinationsTable().setModel(createTableModel(destService.dbSet()));
+            resetButtonRenderers();
+        } catch (Exception ex) {
+            showErrorMessage(ex.getMessage(), "Fatal Error");
+        }
+    }
 }

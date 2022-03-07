@@ -1,7 +1,10 @@
 package controller;
 
 import exceptions.InvalidVacationPackageException;
+import listeners.DestinationAddedListener;
+import listeners.UserConnectedListener;
 import model.Destination;
+import model.User;
 import model.VacationPackage;
 import presentation.ButtonColumn;
 import presentation.MainGUI;
@@ -15,9 +18,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-public class AdminVacationPackageController implements DestinationAddedListener {
+public class AdminVacationPackageController implements DestinationAddedListener, UserConnectedListener {
 
     DestinationService destService = new DestinationService();
     VacationService vacationService = new VacationService();
@@ -33,11 +37,7 @@ public class AdminVacationPackageController implements DestinationAddedListener 
                     if (i.getStateChange() != ItemEvent.SELECTED) {
                         return;
                     }
-                    var selected = (String) i.getItem();
-                    mainGUI.getVacationsByDestinationTable()
-                            .setModel(createTableModel(vacationService
-                                    .getVacationPackagesByDestinationName(selected)));
-                    resetButtonRenderers();
+                    updateTable();
                 } catch (Exception ex) {
                     showErrorMessage(ex.getMessage() + "\nCheck the logs for more info", "Fatal Error");
                 }
@@ -65,10 +65,7 @@ public class AdminVacationPackageController implements DestinationAddedListener 
                             showErrorMessage(exception.getMessage(), "Uh oh!");
                             return;
                         }
-                        mainGUI.getVacationsByDestinationTable()
-                                .setModel(createTableModel(vacationService
-                                        .getVacationPackagesByDestinationName(selectedDestination)));
-                        resetButtonRenderers();
+                        updateTable();
                         modal.setVisible(false);
                         JOptionPane.showMessageDialog(null,
                                 vacName + " added successfully");
@@ -81,11 +78,6 @@ public class AdminVacationPackageController implements DestinationAddedListener 
                 modal.setLocationRelativeTo(null);
                 modal.setVisible(true);
             });
-            var selected = (String) mainGUI.getDestinationComboBox().getSelectedItem();
-            mainGUI.getVacationsByDestinationTable()
-                    .setModel(createTableModel(vacationService
-                            .getVacationPackagesByDestinationName(selected)));
-            resetButtonRenderers();
         } catch (Exception ex) {
             showErrorMessage(ex.getMessage() + "\nCheck the logs for more info", "Fatal Error");
         }
@@ -106,11 +98,8 @@ public class AdminVacationPackageController implements DestinationAddedListener 
                     int rowPressed = Integer.parseInt( e.getActionCommand() );
                     var vacationID = (UUID) table.getModel().getValueAt(rowPressed, 0);
                     var vacationName = (String) table.getModel().getValueAt(rowPressed, 1);
-                    var selectedDestination = (String) mainGUI.getDestinationComboBox().getSelectedItem();
                     vacationService.delete(vacationID);
-                    mainGUI.getVacationsByDestinationTable().setModel(createTableModel(vacationService
-                            .getVacationPackagesByDestinationName(selectedDestination)));
-                    resetButtonRenderers();
+                    updateTable();
                     JOptionPane.showMessageDialog(null,
                             vacationName + " deleted successfully");
                 }
@@ -134,6 +123,7 @@ public class AdminVacationPackageController implements DestinationAddedListener 
                 var startDate = (LocalDate) table.getModel().getValueAt(rowPressed, 4);
                 var endDate = (LocalDate) table.getModel().getValueAt(rowPressed, 5);
                 var capacity = (Integer) table.getModel().getValueAt(rowPressed, 6);
+                var vacationPackageUsers = new ArrayList<>(((List<User>) table.getModel().getValueAt(rowPressed, 10)));
                 var destination = destService.getDestinationByName(selectedDestination);
                 var frame = (JFrame) SwingUtilities.getRoot(mainGUI.getPanel1());
                 var modal = new JDialog(frame, "Edit Vacation Package", true);
@@ -156,15 +146,12 @@ public class AdminVacationPackageController implements DestinationAddedListener 
                         var newEndDate = popup.getEndPeriodDate().getDate();
                         try {
                             vacationService.tryUpdateVacationPackage(vacationID, newVacName, newVacExtraDet, newPrice,
-                                    newStartDate, newEndDate, newCapacity, destination);
+                                    newStartDate, newEndDate, newCapacity, destination, vacationPackageUsers, null, true);
                         } catch (InvalidVacationPackageException ex) {
                             showErrorMessage(ex.getMessage(), "Uh oh!");
                             return;
                         }
-                        mainGUI.getVacationsByDestinationTable()
-                                .setModel(createTableModel(vacationService
-                                        .getVacationPackagesByDestinationName(selectedDestination)));
-                        resetButtonRenderers();
+                        updateTable();
                         modal.setVisible(false);
                         JOptionPane.showMessageDialog(null,
                                 newVacName + " updated successfully");
@@ -191,10 +178,10 @@ public class AdminVacationPackageController implements DestinationAddedListener 
         };
         try {
             String[] columnNames = {"Vacation ID", "Vacation Name", "Extra Details", "Vacation Price",
-                    "Start Period", "End Period", "Capacity", "", ""};
+                    "Start Period", "End Period", "Capacity", "Status", "", "", "Nothing to see here"};
             defaultTableModel.setColumnIdentifiers(columnNames);
             for(var vacationPackage: vacationPackages) {
-                Object[] aux = new Object[9];
+                Object[] aux = new Object[11];
                 aux[0] = vacationPackage.getVacationPackageId();
                 aux[1] = vacationPackage.getVacationName();
                 aux[2] = vacationPackage.getExtraDetails();
@@ -202,8 +189,10 @@ public class AdminVacationPackageController implements DestinationAddedListener 
                 aux[4] = vacationPackage.getStartPeriod();
                 aux[5] = vacationPackage.getEndPeriod();
                 aux[6] = vacationPackage.getVacationCapacity();
-                aux[7] = "Edit";
-                aux[8] = "Delete";
+                aux[7] = vacationPackage.getStatusEnumForVacation();
+                aux[8] = "Edit";
+                aux[9] = "Delete";
+                aux[10] = vacationPackage.getVacationPackageUsers();
                 defaultTableModel.addRow(aux);
             }
         } catch (Exception ex) {
@@ -229,8 +218,25 @@ public class AdminVacationPackageController implements DestinationAddedListener 
         }
     }
 
-    private void resetButtonRenderers() {
-        new ButtonColumn(mainGUI.getVacationsByDestinationTable(), edit, 7);
-        new ButtonColumn(mainGUI.getVacationsByDestinationTable(), delete, 8);
+    @Override
+    public void updateTable() {
+        try {
+            mainGUI.getVacationsByDestinationTable()
+                    .setModel(createTableModel(new ArrayList<>(destService
+                            .getDestinationByName((String) mainGUI.getDestinationComboBox().getSelectedItem()).getVacationPackages())));
+            var columnModel = mainGUI.getVacationsByDestinationTable().getColumnModel().getColumn(10);
+            columnModel.setMinWidth(0);
+            columnModel.setMaxWidth(0);
+            columnModel.setPreferredWidth(0);
+            resetButtonRenderers();
+        } catch (Exception ex) {
+            showErrorMessage(ex.getMessage(), "Fatal Error");
+        }
     }
+
+    private void resetButtonRenderers() {
+        new ButtonColumn(mainGUI.getVacationsByDestinationTable(), edit, 8);
+        new ButtonColumn(mainGUI.getVacationsByDestinationTable(), delete, 9);
+    }
+
 }

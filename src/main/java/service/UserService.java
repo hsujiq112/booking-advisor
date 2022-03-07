@@ -2,6 +2,7 @@ package service;
 
 import exceptions.InvalidUserException;
 import model.User;
+import model.VacationPackage;
 import org.hazlewood.connor.bottema.emailaddress.EmailAddressCriteria;
 import org.hazlewood.connor.bottema.emailaddress.EmailAddressValidator;
 import repository.UserRepository;
@@ -23,10 +24,12 @@ public class UserService implements ServiceI<User> {
     private static final String UNICODE_FORMAT = "UTF8";
     public static final String DESEDE_ENCRYPTION_SCHEME = "DESede";
     private final Cipher cipher;
-    SecretKey key;
+    private final SecretKey key;
+    private final VacationService vacationService;
 
     public UserService() throws Exception {
         this.userRepository = new UserRepository();
+        this.vacationService = new VacationService();
         String myEncryptionKey = "11a50a7c-d167-4e1c-9022-71395ca78f54";
         String myEncryptionScheme = DESEDE_ENCRYPTION_SCHEME;
         var arrayBytes = myEncryptionKey.getBytes(UNICODE_FORMAT);
@@ -58,11 +61,12 @@ public class UserService implements ServiceI<User> {
         userRepository.update(user);
     }
 
+
     public void delete(UUID id) {
         userRepository.delete(id);
     }
 
-    public void tryRegisterUser(String emailAddress, String firstName, String lastName, String username, String password) throws InvalidUserException, Exception {
+    public void tryRegisterUser(String emailAddress, String firstName, String lastName, String username, String password) {
         getErrors(emailAddress, firstName, lastName, username, password, false);
         var userToAdd = new User(emailAddress, firstName, lastName, username, encrypt(password));
         insert(userToAdd);
@@ -115,7 +119,7 @@ public class UserService implements ServiceI<User> {
         if (password.equals("")) {
             throw new InvalidUserException("Empty Password?");
         }
-        if (password.length() < 6) {
+        if (password.length() < 18) {
             throw new InvalidUserException("Password must be at least 6 characters");
         }
         if (username.equals("")) {

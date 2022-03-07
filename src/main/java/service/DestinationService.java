@@ -17,15 +17,15 @@ public class DestinationService implements ServiceI<Destination> {
         this.destinationRepository= new DestinationRepository();
     }
 
-    public void insert(Destination destination) throws Exception {
+    public void insert(Destination destination) {
         destinationRepository.insert(destination);
     }
 
-    public Destination findById(UUID id) throws Exception {
+    public Destination findById(UUID id) {
         return destinationRepository.findById(id);
     }
 
-    public ArrayList<Destination> dbSet() throws Exception {
+    public ArrayList<Destination> dbSet() {
         var destinations = new ArrayList<Destination>();
         destinationRepository.dbSet().forEach(i -> {
             if (i != null) {
@@ -35,7 +35,7 @@ public class DestinationService implements ServiceI<Destination> {
         return destinations;
     }
 
-    public void update(Destination destination) throws Exception {
+    public void update(Destination destination) {
         destinationRepository.update(destination);
     }
 
@@ -43,13 +43,13 @@ public class DestinationService implements ServiceI<Destination> {
         destinationRepository.delete(id);
     }
 
-    public void tryAddNewDestination(String destinationName) throws InvalidDestinationException, Exception {
+    public void tryAddNewDestination(String destinationName) {
         getErrors(destinationName);
         var destinationToAdd = new Destination(destinationName);
         destinationRepository.insert(destinationToAdd);
     }
 
-    public void tryUpdateDestination(UUID id, String destinationName) throws InvalidDestinationException, Exception {
+    public void tryUpdateDestination(UUID id, String destinationName) {
         getErrors(destinationName);
         var destinationToUpdate = new Destination(id, destinationName);
         destinationRepository.update(destinationToUpdate);
