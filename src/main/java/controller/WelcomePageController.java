@@ -15,15 +15,18 @@ public class WelcomePageController implements UserPackageUpdateListener {
 
     private VacaySeekerAllVacationsController vacaySeekerAllVacationsController;
     private VacaySeekerUserVacationsController vacaySeekerUserVacationsController;
+    private VacationsFilterController vacationsFilterController;
     private final ArrayList<UserConnectedListener> listenerList = new ArrayList<>();
     private UserService userService;
     private User loggedInUser;
 
     public WelcomePageController(MainGUI mainGUI, VacaySeekerAllVacationsController vacaySeekerAllVacationsController,
-                                 VacaySeekerUserVacationsController vacaySeekerUserVacationsController) {
+                                 VacaySeekerUserVacationsController vacaySeekerUserVacationsController,
+                                 VacationsFilterController vacationsFilterController) {
         try {
             this.vacaySeekerAllVacationsController = vacaySeekerAllVacationsController;
             this.vacaySeekerUserVacationsController = vacaySeekerUserVacationsController;
+            this.vacationsFilterController = vacationsFilterController;
             userService = new UserService();
             mainGUI.getLoginButton().addActionListener(i -> {
                 try {
@@ -55,6 +58,7 @@ public class WelcomePageController implements UserPackageUpdateListener {
                     mainGUI.getEmailTextField().setText(loggedInUser.getEmailAddress());
                     vacaySeekerAllVacationsController.setCurrentUserLoggedIn(loggedInUser);
                     vacaySeekerUserVacationsController.setCurrentUserLoggedIn(loggedInUser);
+                    vacationsFilterController.setCurrentUserLoggedIn(loggedInUser);
                     emitUserConnected();
                     JOptionPane.showMessageDialog(null,
                             "Welcome, " + username + "!");
@@ -100,6 +104,7 @@ public class WelcomePageController implements UserPackageUpdateListener {
                 mainGUI.getEmailTextField().setText("");
                 vacaySeekerAllVacationsController.setCurrentUserLoggedIn(null);
                 vacaySeekerUserVacationsController.setCurrentUserLoggedIn(null);
+                vacationsFilterController.setCurrentUserLoggedIn(null);
             });
         } catch (Exception ex) {
             showErrorMessage(ex.getMessage(), "Fatal Error");

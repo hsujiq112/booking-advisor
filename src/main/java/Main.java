@@ -20,15 +20,19 @@ public class Main {
         var adminVacPackController = new AdminVacationPackageController(gui);
         var vacayController = new VacaySeekerAllVacationsController(gui);
         var vacayUserController = new VacaySeekerUserVacationsController(gui);
-        var welcomePageController = new WelcomePageController(gui, vacayController, vacayUserController);
+        var vacationsFilterController = new VacationsFilterController(gui);
+        var welcomePageController = new WelcomePageController(gui, vacayController, vacayUserController, vacationsFilterController);
         destController.addListener(adminVacPackController);
         welcomePageController.addListener(destController);
         welcomePageController.addListener(adminVacPackController);
         welcomePageController.addListener(vacayController);
         welcomePageController.addListener(vacayUserController);
+        welcomePageController.addListener(vacationsFilterController);
         vacayController.addUserPackageUpdateListener(welcomePageController);
         vacayController.addVacationAddedToUserListener(vacayUserController);
         vacayUserController.addUserPackageUpdateListener(welcomePageController);
         vacayUserController.addVacationRemovedToUserListener(vacayController);
+        vacationsFilterController.addFilterAppliedListener(vacayController);
+        vacationsFilterController.addFilterAppliedListener(vacayUserController);
     }
 }

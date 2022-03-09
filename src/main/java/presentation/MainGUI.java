@@ -1,5 +1,7 @@
 package presentation;
 
+import com.github.lgooddatepicker.components.DatePicker;
+
 import javax.swing.*;
 
 public class MainGUI {
@@ -16,9 +18,9 @@ public class MainGUI {
     private JPasswordField registerPassword;
     private JButton registerButton;
     private JButton loginButton;
-    private JComboBox vacayComboBox;
+    private JComboBox<String> vacayComboBox;
     private JButton vacayRefreshButton;
-    private JComboBox destinationComboBox;
+    private JComboBox<String> destinationComboBox;
     private JTable destinationsTable;
     private JTable allVacayTable;
     private JTable userVacayTable;
@@ -29,9 +31,14 @@ public class MainGUI {
     private JTextField usernameTextField;
     private JTextField firstNameTextField;
     private JTextField lastNameTextField;
-    private JScrollPane allVacaysTable;
-    private JScrollPane userVacaysTable;
     private JTextField emailTextField;
+    private JTextField filterValueTextBox;
+    private DatePicker filterDatePicker;
+    private JComboBox<String> filterDestinationComboBox;
+
+    public JComboBox<String> getFilterDestinationComboBox() {
+        return filterDestinationComboBox;
+    }
 
     public JTabbedPane getMainTabbedPane() {
         return mainTabbedPane;
@@ -75,10 +82,6 @@ public class MainGUI {
 
     public JComboBox getVacayComboBox() {
         return vacayComboBox;
-    }
-
-    public JButton getVacayRefresh() {
-        return vacayRefreshButton;
     }
 
     public JComboBox getDestinationComboBox() {
@@ -131,5 +134,17 @@ public class MainGUI {
 
     public JTextField getEmailTextField() {
         return emailTextField;
+    }
+
+    public JButton getVacayRefreshButton() {
+        return vacayRefreshButton;
+    }
+
+    public JTextField getFilterValueTextBox() {
+        return filterValueTextBox;
+    }
+
+    public DatePicker getFilterDatePicker() {
+        return filterDatePicker;
     }
 }

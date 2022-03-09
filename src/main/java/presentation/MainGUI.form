@@ -343,7 +343,7 @@
             <properties/>
             <border type="none"/>
             <children>
-              <grid id="b232c" layout-manager="GridLayoutManager" row-count="2" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+              <grid id="b232c" layout-manager="GridLayoutManager" row-count="2" column-count="6" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                 <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -367,7 +367,7 @@
                   </component>
                   <component id="14d69" class="javax.swing.JButton" binding="vacayRefreshButton">
                     <constraints>
-                      <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <text value="Refresh"/>
@@ -375,7 +375,7 @@
                   </component>
                   <tabbedpane id="59cf1" default-binding="true">
                     <constraints>
-                      <grid row="1" column="1" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                      <grid row="1" column="1" row-span="1" col-span="4" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
                         <preferred-size width="200" height="200"/>
                       </grid>
                     </constraints>
@@ -390,7 +390,7 @@
                         <properties/>
                         <border type="none"/>
                         <children>
-                          <scrollpane id="47c13" binding="allVacaysTable">
+                          <scrollpane id="47c13">
                             <constraints>
                               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                             </constraints>
@@ -420,7 +420,7 @@
                         <properties/>
                         <border type="none"/>
                         <children>
-                          <scrollpane id="feb14" binding="userVacaysTable">
+                          <scrollpane id="feb14">
                             <constraints>
                               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                             </constraints>
@@ -453,11 +453,38 @@
                   </vspacer>
                   <vspacer id="8fc5f">
                     <constraints>
-                      <grid row="0" column="4" row-span="2" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
+                      <grid row="0" column="5" row-span="2" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
                         <minimum-size width="10" height="10"/>
                       </grid>
                     </constraints>
                   </vspacer>
+                  <component id="7aac2" class="javax.swing.JTextField" binding="filterValueTextBox">
+                    <constraints>
+                      <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <editable value="true"/>
+                      <enabled value="true"/>
+                    </properties>
+                  </component>
+                  <component id="c2086" class="com.github.lgooddatepicker.components.DatePicker" binding="filterDatePicker">
+                    <constraints>
+                      <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <enabled value="true"/>
+                      <visible value="false"/>
+                    </properties>
+                  </component>
+                  <component id="2am09" class="javax.swing.JComboBox" binding="filterDestinationComboBox">>
+                    <constraints>
+                      <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <enabled value="true"/>
+                      <visible value="false"/>
+                    </properties>
+                  </component>
                 </children>
               </grid>
             </children>

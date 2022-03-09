@@ -2,10 +2,7 @@ package service;
 
 import exceptions.InvalidUserException;
 import exceptions.InvalidVacationPackageException;
-import model.Destination;
-import model.User;
-import model.VacationPackage;
-import model.VacationPackageStatusEnum;
+import model.*;
 import repository.VacationRepository;
 
 import java.time.LocalDate;
@@ -176,5 +173,42 @@ public class VacationService implements ServiceI<VacationPackage> {
                 }
             }
         }
+    }
+
+    public ArrayList<VacationPackage> applyFilter(ArrayList<VacationPackage> allVacations, String selectedItem, String text, LocalDate date) {
+        if (selectedItem == null) {
+            return allVacations;
+        }
+        switch (selectedItem) {
+            case "-":
+                break;
+            case VacationPackageFilterEnum.PRICE:
+                if (!text.equals("")) {
+                    var parsedFloat = Float.parseFloat(text);
+                    allVacations = new ArrayList<>(allVacations.stream()
+                            .filter(i -> i.getVacationPrice().equals(parsedFloat)).toList());
+                }
+                break;
+            case VacationPackageFilterEnum.DESTINATION:
+                if (!text.equals("")) {
+                    allVacations = new ArrayList<>(allVacations.stream()
+                            .filter(i -> i.getDestination()
+                                    .getDestinationName().contains(text)).toList());
+                }
+                break;
+            case VacationPackageFilterEnum.START_DATE:
+                if (date != null) {
+                    allVacations = new ArrayList<>(allVacations.stream()
+                            .filter(i -> i.getStartPeriod().equals(date)).toList());
+                }
+                break;
+            case VacationPackageFilterEnum.END_DATE:
+                if (date != null) {
+                    allVacations = new ArrayList<>(allVacations.stream()
+                            .filter(i -> i.getEndPeriod().equals(date)).toList());
+                }
+                break;
+        }
+        return allVacations;
     }
 }

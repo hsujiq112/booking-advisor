@@ -12,6 +12,7 @@ import presentation.VacationPackagePopup;
 import service.DestinationService;
 import service.VacationService;
 
+import javax.persistence.NoResultException;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
@@ -173,11 +174,11 @@ public class AdminVacationPackageController implements DestinationAddedListener,
         var defaultTableModel = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 7 || column == 8;
+                return column == 8 || column == 9;
             }
         };
         try {
-            String[] columnNames = {"Vacation ID", "Vacation Name", "Extra Details", "Vacation Price",
+            String[] columnNames = {"Vacation ID", "Vacation Name", "Extra Details", "Vacation Price (€)",
                     "Start Period", "End Period", "Capacity", "Status", "", "", "Nothing to see here"};
             defaultTableModel.setColumnIdentifiers(columnNames);
             for(var vacationPackage: vacationPackages) {
@@ -221,9 +222,16 @@ public class AdminVacationPackageController implements DestinationAddedListener,
     @Override
     public void updateTable() {
         try {
-            mainGUI.getVacationsByDestinationTable()
-                    .setModel(createTableModel(new ArrayList<>(destService
-                            .getDestinationByName((String) mainGUI.getDestinationComboBox().getSelectedItem()).getVacationPackages())));
+            try {
+                var vacPacks = new ArrayList<>(destService
+                        .getDestinationByName((String) mainGUI.getDestinationComboBox()
+                                .getSelectedItem()).getVacationPackages());
+                mainGUI.getVacationsByDestinationTable()
+                        .setModel(createTableModel(vacPacks));
+            } catch (NoResultException ex) {
+                mainGUI.getVacationsByDestinationTable()
+                        .setModel(createTableModel(new ArrayList<>()));
+            }
             var columnModel = mainGUI.getVacationsByDestinationTable().getColumnModel().getColumn(10);
             columnModel.setMinWidth(0);
             columnModel.setMaxWidth(0);
