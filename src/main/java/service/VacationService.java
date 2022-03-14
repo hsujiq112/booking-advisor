@@ -5,6 +5,7 @@ import exceptions.InvalidVacationPackageException;
 import model.*;
 import repository.VacationRepository;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -38,7 +39,14 @@ public class VacationService implements ServiceI<VacationPackage> {
     public ArrayList<VacationPackage> getAllAvailablePackagesForUser(UUID userID) {
         return new ArrayList<>(dbSet().stream().filter(i ->
                 !i.getStatusEnumForVacation().equals(VacationPackageStatusEnum.BOOKED) &&
-                !i.getVacationPackageUsers().stream().anyMatch(j -> j.getUserId().equals(userID)))
+                        i.getVacationPackageUsers().stream().noneMatch(j -> j.getUserId().equals(userID)))
+                .toList());
+    }
+
+    public ArrayList<VacationPackage> getAllPackagesAvailableToFilter(UUID userID) {
+        return new ArrayList<>(dbSet().stream().filter(i ->
+                        !i.getStatusEnumForVacation().equals(VacationPackageStatusEnum.BOOKED) ||
+                                i.getVacationPackageUsers().stream().anyMatch(j -> j.getUserId().equals(userID)))
                 .toList());
     }
 
@@ -175,7 +183,8 @@ public class VacationService implements ServiceI<VacationPackage> {
         }
     }
 
-    public ArrayList<VacationPackage> applyFilter(ArrayList<VacationPackage> allVacations, String selectedItem, String text, LocalDate date) {
+    public ArrayList<VacationPackage> applyFilter(ArrayList<VacationPackage> allVacations, String selectedItem,
+                                                  String text, String destination, LocalDate date) {
         if (selectedItem == null) {
             return allVacations;
         }
@@ -190,10 +199,10 @@ public class VacationService implements ServiceI<VacationPackage> {
                 }
                 break;
             case VacationPackageFilterEnum.DESTINATION:
-                if (!text.equals("")) {
+                if (!destination.equals("")) {
                     allVacations = new ArrayList<>(allVacations.stream()
                             .filter(i -> i.getDestination()
-                                    .getDestinationName().contains(text)).toList());
+                                    .getDestinationName().contains(destination)).toList());
                 }
                 break;
             case VacationPackageFilterEnum.START_DATE:

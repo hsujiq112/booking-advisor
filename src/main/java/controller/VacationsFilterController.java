@@ -80,7 +80,7 @@ public class VacationsFilterController implements UserConnectedListener {
     @Override
     public void updateTable() {
         var allAvailableDestinations = vacationService
-                .getAllAvailablePackagesForUser(currentUserLoggedIn.getUserId())
+                .getAllPackagesAvailableToFilter(currentUserLoggedIn.getUserId())
                     .stream().map(i -> i.getDestination().getDestinationName()).distinct().toList();
         mainGUI.getFilterDestinationComboBox().removeAllItems();
         allAvailableDestinations.forEach(i -> mainGUI.getFilterDestinationComboBox().addItem(i));

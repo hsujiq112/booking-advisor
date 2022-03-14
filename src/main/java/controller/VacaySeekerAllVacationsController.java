@@ -123,7 +123,8 @@ public class VacaySeekerAllVacationsController implements UserConnectedListener,
         try {
             var tableData = vacationService.getAllAvailablePackagesForUser(currentUserLoggedIn.getUserId());
             tableData = vacationService.applyFilter(tableData, (String) mainGUI.getVacayComboBox().getSelectedItem(),
-                    mainGUI.getFilterValueTextBox().getText(), mainGUI.getFilterDatePicker().getDate());
+                    mainGUI.getFilterValueTextBox().getText(), (String) mainGUI.getFilterDestinationComboBox().getSelectedItem(),
+                    mainGUI.getFilterDatePicker().getDate());
             mainGUI.getAllVacayTable().setModel(createTableModel(tableData));
             var columnModel = mainGUI.getAllVacayTable().getColumnModel().getColumn(0);
             columnModel.setMinWidth(0);

@@ -124,7 +124,8 @@ public class VacaySeekerUserVacationsController implements UserConnectedListener
         try {
             var tableData = new ArrayList<>(currentUserLoggedIn.getVacationPackageUsers());
             tableData = vacationService.applyFilter(tableData, (String) mainGUI.getVacayComboBox().getSelectedItem(),
-                    mainGUI.getFilterValueTextBox().getText(), mainGUI.getFilterDatePicker().getDate());
+                    mainGUI.getFilterValueTextBox().getText(), (String) mainGUI.getFilterDestinationComboBox().getSelectedItem(),
+                    mainGUI.getFilterDatePicker().getDate());
             mainGUI.getUserVacayTable().setModel(createTableModel(tableData));
             var columnModel = mainGUI.getUserVacayTable().getColumnModel().getColumn(0);
             columnModel.setMinWidth(0);
