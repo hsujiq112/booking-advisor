@@ -1,21 +1,20 @@
 package model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.util.Optional;
-import java.util.UUID;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.*;
+import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "user")
 public class User {
 
     @Id
-    private UUID id;
+    @Type(type = "org.hibernate.type.UUIDCharType")
+    private UUID userId;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String emailAddress;
 
     @Column(nullable = false)
@@ -24,26 +23,84 @@ public class User {
     @Column(nullable = false)
     private String lastName;
 
-    @Column()
+    @Column(nullable = false, unique = true)
+    private String username;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
     private Boolean isAdmin;
 
-    public User(String emailAddress, String firstName, String lastName) {
-        this.id = UUID.randomUUID();
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "vacation_package_user_join", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "vacationPackageId"))
+    private List<VacationPackage> vacationPackageUsers;
+
+    public User(String emailAddress, String firstName, String lastName, String username, String password) {
+        this.userId = UUID.randomUUID();
         this.emailAddress = emailAddress;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.username = username;
+        this.password = password;
         this.isAdmin = false;
     }
 
-    public User(UUID id, String emailAddress, String firstName, String lastName, Boolean isAdmin) {
-        this.id = id;
+    public User(UUID userId, String emailAddress, String firstName, String lastName, String username, String password, Boolean isAdmin) {
+        this.userId = userId;
         this.emailAddress = emailAddress;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.username = username;
+        this.password = password;
         this.isAdmin = isAdmin;
     }
 
     public User() {
 
+    }
+
+    public UUID getUserId() {
+        return userId;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public Boolean getAdmin() {
+        return isAdmin;
+    }
+
+    public List<VacationPackage> getVacationPackageUsers() {
+        return vacationPackageUsers;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", emailAddress='" + emailAddress + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", isAdmin=" + isAdmin +
+                ", vacationPackageUsers=" + vacationPackageUsers +
+                '}';
     }
 }

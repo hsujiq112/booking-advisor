@@ -2,19 +2,10 @@ package repository;
 
 import model.User;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
-public class UserRepository {
-
-    private final EntityManagerFactory entityManagerFactory =
-            Persistence.createEntityManagerFactory("lab.SD.assignment.1");
-
-    public void insertUser(User user) {
-        var em = entityManagerFactory.createEntityManager();
-        em.getTransaction().begin();
-        em.persist(user);
-        em.getTransaction().commit();
-        em.close();
+public class UserRepository extends RepositoryBase<User> {
+    public User getUserByUsername(String username) {
+        var em = getEntityManagerFactory().createEntityManager();
+        return (User) em.createQuery("SELECT u FROM User u WHERE u.username = :username")
+                .setParameter("username", username).getSingleResult();
     }
 }
